@@ -1,12 +1,14 @@
-function maxEnvelopes(envelopes) {
-  envelopes.sort((a, b) => a[0] - b[0] || b[1] - a[1]);
-  const dp = new Array(envelopes.length).fill(1);
-  for (let i = 0; i < envelopes.length; i++) {
-    for (let j = 0; j < i; j++) {
-      if (envelopes[i][1] > envelopes[j][1]) {
-        dp[i] = Math.max(dp[i], dp[j] + 1);
-      }
+function rob(nums) {
+  if (nums.length === 1) return nums[0];
+  const robRange = (start, end) => {
+    let prevMax = 0;
+    let currMax = 0;
+    for (let i = start; i <= end; i++) {
+      const temp = currMax;
+      currMax = Math.max(currMax, prevMax + nums[i]);
+      prevMax = temp;
     }
-  }
-  return Math.max(...dp);
+    return currMax;
+  };
+  return Math.max(robRange(0, nums.length - 2), robRange(1, nums.length - 1));
 }
